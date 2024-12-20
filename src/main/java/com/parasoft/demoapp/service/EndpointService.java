@@ -14,24 +14,4 @@ import java.text.MessageFormat;
 
 @Service
 public class EndpointService {
-
-    @Autowired
-    private ApplicationEventPublisher publisher;
-
-    @Autowired
-    private RouteLocator routeLocator;
-
-    public void refreshEndpoint() {
-        RoutesRefreshedEvent routesRefreshedEvent = new RoutesRefreshedEvent(routeLocator);
-        publisher.publishEvent(routesRefreshedEvent);
-    }
-
-    public void validateUrl(String urlStr, String exceptionMessage) throws EndpointInvalidException, ParameterException {
-
-        ParameterValidator.requireNonBlank(urlStr, GlobalPreferencesMessages.BLANK_URL);
-
-        if(!UrlUtil.isGoodHttpForm(urlStr)) {
-            throw new EndpointInvalidException(MessageFormat.format(exceptionMessage, urlStr));
-        }
-    }
 }

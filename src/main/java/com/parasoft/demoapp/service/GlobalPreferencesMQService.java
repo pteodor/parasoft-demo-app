@@ -8,11 +8,4 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class GlobalPreferencesMQService {
-
-    @Autowired
-    private JmsMessagingTemplate jmsMessagingTemplate;
-
-    public void sendToIndustryChangeTopic(IndustryChangeMQMessageDTO messageDto) {
-        jmsMessagingTemplate.convertAndSend(ActiveMQConfig.TOPIC_INDUSTRY_CHANGE, messageDto);
-    }
 }

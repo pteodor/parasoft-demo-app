@@ -23,42 +23,4 @@ import static org.springframework.amqp.core.Address.AMQ_RABBITMQ_REPLY_TO;
 @Slf4j
 @Service
 public class ItemInventoryMQService {
-
-    @Autowired
-    private JmsMessagingTemplate jmsMessagingTemplate;
-
-    @Autowired
-    private KafkaTemplate<String, InventoryOperationResultMessageDTO> operationResultKafkaTemplate;
-
-    @Autowired
-    private RabbitTemplate rabbitTemplate;
-
-    public void sendToInventoryResponseDestination(InventoryOperationResultMessageDTO message) {
-        String responseDestination = null;
-        if (MQConfig.currentMQType == ACTIVE_MQ) {
-            ActiveMQQueue destination = ActiveMQConfig.getInventoryServiceSendToQueue();
-            responseDestination = "ActiveMQ: " + destination.toString();
-            jmsMessagingTemplate.convertAndSend(destination, message);
-        } else if (MQConfig.currentMQType == KAFKA) {
-            String destination = KafkaConfig.getOrderServiceListenToTopic();
-            responseDestination = "Kafka topic: " + destination;
-            operationResultKafkaTemplate.send(destination, 0, message.getOrderNumber(), message);
-        } else if (MQConfig.currentMQType == MqType.RABBIT_MQ) {
-            responseDestination = "RabbitMQ queue: " + RabbitMQConfig.getOrderServiceListenToQueue();
-            rabbitTemplate.convertAndSend(RabbitMQConfig.INVENTORY_DIRECT_EXCHANGE,
-                                          RabbitMQConfig.INVENTORY_QUEUE_RESPONSE_ROUTING_KEY,
-                                          message);
-        }
-
-        log.info("Inventory service sent a message to {} \n Message content: {}", responseDestination, message);
-    }
-
-    public void send(Destination destination, InventoryOperationResultMessageDTO message) {
-        jmsMessagingTemplate.convertAndSend(destination, message);
-    }
-
-    public void sendToAmqRabbitMqReplyToQueue(InventoryOperationResultMessageDTO messageToReply, String routingKey) {
-        rabbitTemplate.convertAndSend(routingKey, messageToReply);
-        log.info("Inventory service sent a message to RabbitMQ queue: {} \n Message content: {}", AMQ_RABBITMQ_REPLY_TO, messageToReply);
-    }
 }
