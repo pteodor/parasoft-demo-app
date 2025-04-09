@@ -17,7 +17,7 @@ public class RoleService {
     private RoleRepository roleRepository;
 
     public RoleEntity addNewRole(String roleName) throws RoleNameExistsAlreadyException {
-    	
+
         if(roleExists(roleName)){
             throw new RoleNameExistsAlreadyException(
                     MessageFormat.format(UserMessages.ROLE_NAME_EXISTS_ALREADY, roleName));
