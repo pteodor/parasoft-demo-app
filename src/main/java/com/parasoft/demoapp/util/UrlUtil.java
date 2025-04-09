@@ -1,11 +1,13 @@
 package com.parasoft.demoapp.util;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import javax.net.ssl.HttpsURLConnection;
+import javax.servlet.http.HttpServletRequest;
 
 public class UrlUtil {
 
@@ -23,7 +25,7 @@ public class UrlUtil {
 	public static int validateUrl(String urlStr) throws IOException {
 
         URL url = new URL(urlStr);
-        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
         con.setUseCaches(false);
         con.setConnectTimeout(1000);
         con.connect();

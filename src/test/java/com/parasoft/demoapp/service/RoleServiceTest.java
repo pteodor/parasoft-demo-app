@@ -16,7 +16,7 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
+import com.parasoft.demoapp.exception.RoleNameExistsAlreadyException;
 import com.parasoft.demoapp.messages.Messages;
 import com.parasoft.demoapp.messages.UserMessages;
 import com.parasoft.demoapp.model.global.RoleEntity;
@@ -147,7 +147,7 @@ public class RoleServiceTest {
 		// Then
 		assertEquals(findByNameResult, result);
 	}
-	
+
 	/**
 	 * test for getRoleByRoleName(String)
 	 *
